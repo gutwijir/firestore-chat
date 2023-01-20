@@ -1,0 +1,11 @@
+#Files listed below should not be formatted by Prettier (because of useless heavy duty etc.)
+
+# 3rd Party Code
+node_modules
+
+# Generated
+.next
+.vercel
+
+# Misc
+.idea
