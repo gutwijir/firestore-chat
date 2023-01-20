@@ -9,7 +9,8 @@
     "lint": "next lint",
     "format": "prettier --check .",
     "lint-staged": "lint-staged",
-    "install-husky": "husky install"
+    "install-husky": "husky install",
+    "commitlint": "commitlint --edit $1"
   },
   "dependencies": {
     "@next/font": "13.1.3",
@@ -18,6 +19,8 @@
     "react-dom": "18.2.0"
   },
   "devDependencies": {
+    "@commitlint/cli": "^17.4.2",
+    "@strv/commitlint-config": "^2.1.0",
     "@strv/eslint-config-react": "^4.2.0",
     "@strv/eslint-config-typescript": "^3.2.0",
     "@strv/prettier-config": "^2.0.0",
