@@ -1,17 +1,13 @@
-//import { initializeApp } from 'firebase/app'
-import { getAuth } from 'firebase/auth'
-//import { getFirestore } from 'firebase/firestore'
 import { useAuthState } from 'react-firebase-hooks/auth'
 
-//import { firebaseConfig } from '@/config/firebase.config'
+import { useFirebaseContext } from '@/contexts/firebase'
 import styles from '@/styles/Home.module.css'
 
 import { ChatRoom } from '../ChatRoom'
 import { SignIn } from '../SignIn'
 
 export const HomePage = () => {
-  //const app = initializeApp(firebaseConfig)
-  const auth = getAuth()
+  const { auth, firestore } = useFirebaseContext()
 
   const [user] = useAuthState(auth)
 

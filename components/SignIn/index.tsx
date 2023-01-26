@@ -1,5 +1,7 @@
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
+import { signInWithEmailAndPassword } from 'firebase/auth'
 import React, { useState } from 'react'
+
+import { useFirebaseContext } from '@/contexts/firebase'
 
 type UserCredentials = {
   email: string
@@ -12,19 +14,19 @@ export const SignIn = () => {
     password: '',
   })
 
+  const { auth } = useFirebaseContext()
+
   const handleSignIn = (e: React.SyntheticEvent): void => {
     e.preventDefault()
-
-    const auth = getAuth()
 
     signInWithEmailAndPassword(
       auth,
       userCredentials.email,
       userCredentials.password
     )
-      .then((userCredential) => {
-        //TODO Commit to context the const user = userCredential.user
-        alert('Successful login ' + String(userCredential.user.displayName))
+      .then((userInfo) => {
+        //TODO Commit to context the const user = userInfo.user
+        alert('Successful login ' + String(userInfo.user.displayName))
       })
       .catch((err) => {
         alert('Errored login: ' + String(err))

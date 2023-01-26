@@ -1,9 +1,8 @@
-import { getAuth } from 'firebase/auth'
-import type { Auth } from 'firebase/auth'
 import { collection, query, orderBy, onSnapshot } from 'firebase/firestore'
 import type { Firestore } from 'firebase/firestore'
 import { useEffect, useState } from 'react'
 
+import { useFirebaseContext } from '@/contexts/firebase'
 import type { Message } from '@/types/MessageType'
 
 type PropsType = {
@@ -12,12 +11,11 @@ type PropsType = {
 
 export const ChatRoom = ({ firestore }: PropsType) => {
   const [messages, setMessages] = useState<Message[]>([])
-  const [auth, setAuth] = useState<Auth>()
+  const { auth } = useFirebaseContext()
 
   useEffect(() => {
     const messagesRef = collection(firestore, 'messages')
     const q = query(messagesRef, orderBy('createdAt'))
-    setAuth(getAuth())
 
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       let messageArr: Message[] = []
@@ -31,11 +29,11 @@ export const ChatRoom = ({ firestore }: PropsType) => {
       setMessages(messageArr)
     })
 
-    return unsubscribe
+    return () => unsubscribe()
   }, [firestore])
 
   const handleSignout = () => {
-    void auth?.signOut()
+    void auth.signOut()
   }
 
   return (
