@@ -6,7 +6,8 @@ type BackgroundBallColor = {
 }
 
 export const BallBackground = styled.div`
-  position: absolute;
+  position: relative;
+  top: 10rem;
 `
 
 export const Ball = styled.div<BackgroundBallColor>`

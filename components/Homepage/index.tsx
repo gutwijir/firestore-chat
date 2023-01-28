@@ -1,19 +1,16 @@
 import { useAuthState } from 'react-firebase-hooks/auth'
 
 import { useFirebaseContext } from '@/contexts/firebase'
-import styles from '@/styles/Home.module.css'
+
+import { StyledMain } from './styled'
 
 import { ChatRoom } from '../ChatRoom'
 import { SignIn } from '../SignIn'
 
 export const HomePage = () => {
-  const { auth, firestore } = useFirebaseContext()
+  const { auth } = useFirebaseContext()
 
   const [user] = useAuthState(auth)
 
-  return (
-    <main className={styles.main}>
-      {user ? <ChatRoom firestore={firestore} /> : <SignIn />}
-    </main>
-  )
+  return <StyledMain>{user ? <ChatRoom /> : <SignIn />}</StyledMain>
 }
