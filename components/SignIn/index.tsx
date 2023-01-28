@@ -2,6 +2,17 @@ import { signInWithEmailAndPassword } from 'firebase/auth'
 import React, { useState } from 'react'
 
 import { useFirebaseContext } from '@/contexts/firebase'
+import { Background } from '@/styles/background'
+
+import {
+  SubmitButton,
+  InputLabel,
+  LoginForm,
+  LoginFormWrapper,
+  CredentialInput,
+  H1,
+  Label,
+} from './styled'
 
 type UserCredentials = {
   email: string
@@ -39,21 +50,26 @@ export const SignIn = () => {
   }
 
   return (
-    <form onSubmit={handleSignIn}>
-      <label>
-        <span>Email:</span>
-        <input type="text" name="email" onChange={handleChange} />
-      </label>
-      <label>
-        <span>Password:</span>
-        <input
-          type="password"
-          name="password"
-          autoComplete="on"
-          onChange={handleChange}
-        />
-      </label>
-      <input type="submit" value="Sign in" />
-    </form>
+    <Background>
+      <LoginFormWrapper>
+        <H1>Login here</H1>
+        <LoginForm onSubmit={handleSignIn}>
+          <InputLabel>
+            <Label>Email</Label>
+            <CredentialInput type="text" name="email" onChange={handleChange} />
+          </InputLabel>
+          <InputLabel>
+            <Label>Password</Label>
+            <CredentialInput
+              type="password"
+              name="password"
+              autoComplete="on"
+              onChange={handleChange}
+            />
+          </InputLabel>
+          <SubmitButton type="submit" value="Sign in" />
+        </LoginForm>
+      </LoginFormWrapper>
+    </Background>
   )
 }

@@ -13,7 +13,6 @@ export const HomePage = () => {
 
   return (
     <main className={styles.main}>
-      <h1>firebase app</h1>
       {user ? <ChatRoom firestore={firestore} /> : <SignIn />}
     </main>
   )
