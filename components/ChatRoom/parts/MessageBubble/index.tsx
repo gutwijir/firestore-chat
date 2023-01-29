@@ -1,3 +1,4 @@
+import { useFirebaseContext } from '@/contexts/firebase'
 import type { Message } from '@/types/MessageType'
 
 import { StyledMessageBubble } from './styled'
@@ -7,11 +8,10 @@ type PropsType = {
 }
 
 export const MessageBubble = ({ message }: PropsType) => {
+  const { auth } = useFirebaseContext()
+
   return (
-    //fromMe TO BE DONE BETTER! USING CURRENT USER (no state needed I guess)
-    <StyledMessageBubble
-      fromMe={message.uid === '0ENWu752B1fpLuBxisZh5Ne7oFl2'}
-    >
+    <StyledMessageBubble fromMe={message.uid === auth.currentUser?.uid}>
       {message.text}
     </StyledMessageBubble>
   )

@@ -26,6 +26,7 @@ export const SubmitButton = styled.input`
   font-size: 1.2rem;
   font-weight: 600;
   color: black;
+  cursor: pointer;
 `
 
 export const InputLabel = styled.label`

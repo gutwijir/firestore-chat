@@ -9,12 +9,19 @@ import {
 import { useEffect, useRef, useState } from 'react'
 
 import { useFirebaseContext } from '@/contexts/firebase'
+import { Background } from '@/styles/background'
 import type { Message } from '@/types/MessageType'
 
 import { MessageBubble } from './parts/MessageBubble'
-import { ChatMessageForm, ChatWrapper, SendButton } from './styled'
+import {
+  ChatMessageForm,
+  ChatWrapper,
+  SendButton,
+  SignoutButton,
+  NewMessageInput,
+} from './styled'
 
-import { CredentialInput, InputLabel } from '../SignIn/styled'
+import { InputLabel } from '../SignIn/styled'
 
 export const ChatRoom = () => {
   const [messages, setMessages] = useState<Message[]>([])
@@ -22,8 +29,7 @@ export const ChatRoom = () => {
 
   const [newMessage, setNewMessage] = useState('')
 
-  const chatWrapperRef = useRef<HTMLDivElement | null>(null)
-  const dummy = useRef<HTMLDivElement | null>()
+  const lastMessageRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const messagesRef = collection(firestore, 'messages') //TO BE CHANGED DYNAMICALLY?
@@ -44,6 +50,10 @@ export const ChatRoom = () => {
     return () => unsubscribe()
   }, [firestore])
 
+  useEffect(() => {
+    lastMessageRef.current?.scrollIntoView({ behavior: 'smooth' })
+  }, [messages])
+
   const handleSignout = () => {
     void auth.signOut()
   }
@@ -53,33 +63,29 @@ export const ChatRoom = () => {
 
     const docData = {
       text: newMessage,
-      createdAt: Timestamp.fromDate(new Date()),
-      uid: '0ENWu752B1fpLuBxisZh5Ne7oFl2', //me, to be changed!
+      createdAt: Timestamp.now(),
+      uid: auth.currentUser?.uid,
     }
 
     void addDoc(collection(firestore, 'messages'), docData)
 
     setNewMessage('')
-
-    //TODO enable scrolling right after message is sent - empty div trick does not work apparently
-    chatWrapperRef.current.scrollTop = chatWrapperRef.current.scrollHeight
-    dummy.current.scrollIntoView({ behavior: 'smooth' })
   }
 
   return (
-    <>
-      <button onClick={handleSignout} type="button">
+    <Background>
+      <SignoutButton onClick={handleSignout} type="button">
         Sign out
-      </button>
-      <ChatWrapper ref={chatWrapperRef}>
+      </SignoutButton>
+      <ChatWrapper>
         {messages.map((message) => {
           return <MessageBubble key={message.id} message={message} />
         })}
-        <div ref={dummy} />
+        <div ref={lastMessageRef} />
       </ChatWrapper>
       <ChatMessageForm onSubmit={handleMessageSent}>
         <InputLabel>
-          <CredentialInput
+          <NewMessageInput
             type="text"
             value={newMessage}
             onChange={(e) => setNewMessage(e.target.value)}
@@ -87,6 +93,6 @@ export const ChatRoom = () => {
         </InputLabel>
         <SendButton type="submit" value="Send" />
       </ChatMessageForm>
-    </>
+    </Background>
   )
 }
