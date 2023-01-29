@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components'
 
 type Props = {
-  fromMe: string
+  fromMe: boolean
 }
 
 export const StyledMessageBubble = styled.p<Props>`
